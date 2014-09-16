@@ -1,0 +1,9 @@
+1. Vorraussetzungen
+-- Python 2.7
+-- lxml
+-- FIDO (externals/)
+-- PyQT4
+-- paramiko
+
+1a Windows 
+--- PyCrypto Binaries für paramiko
