@@ -105,7 +105,6 @@ def parse_sru_infos(response):
 
 def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_bool):
     """
-
     :return:
     """
     creation_date = datetime.datetime.today().isoformat()
@@ -700,10 +699,3 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     # write metadata.xml
     tree = ET.ElementTree(root)
     tree.write(temp_dir + "/metadata.xml",  encoding="UTF-8", pretty_print=True, xml_declaration=True)
-
-
-def write_structmd_file():
-    """
-
-    :return:
-    """

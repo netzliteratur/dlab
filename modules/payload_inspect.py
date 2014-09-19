@@ -63,6 +63,10 @@ def id_file_rep(bag_dir):
             rep_list.append({file_: {'cat': 'crawl', 'uuid': rep_uuid_, 'has_part': uuid_}})
             file_list[-1][file_]['is_part'] = rep_uuid_
             rep_bool["crawl"] = True
+        if file_.startswith("crawl_"):
+            rep_list.append({file_: {'cat': 'crawl', 'uuid': rep_uuid_, 'has_part': uuid_}})
+            file_list[-1][file_]['is_part'] = rep_uuid_
+            rep_bool["crawl"] = True
         if file_.startswith("source_"):
             rep_list.append({file_: {'cat': 'source', 'uuid': rep_uuid_, 'has_part': uuid_}})
             file_list[-1][file_]['is_part'] = rep_uuid_

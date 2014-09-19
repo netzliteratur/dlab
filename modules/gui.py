@@ -1,6 +1,7 @@
 """
 gui module
 """
+import os
 import sys 
 from PyQt4 import QtGui, QtCore 
 from menu import Ui_main_menu as menu
@@ -12,6 +13,7 @@ import payload_inspect
 import metadata
 import hashit
 import subprocess
+import structmd
 
 
 class menu_(QtGui.QDialog, menu):
@@ -174,6 +176,23 @@ class get_abstracts(QtGui.QDialog, create_bag_1.Ui_create_bag_1):
         file_list, rep_list, rep_bool = payload_inspect.id_file_rep(self.bag_dir)
         metadata.write_metadata_file(self.bag_dir, self.sru_dict, self.addinfos_dict, file_list, rep_list, rep_bool)
         bag.rename_bag(self.bag_dir, "BSZ" + self.ppn + ".bag")
+        # structmd
+        found_archive_ = False
+        struct_md_cont_list = {}
+        dir_ = "BSZ" + self.ppn + ".bag"
+        for file_ in os.listdir(dir_):
+            if file_.endswith('.zip'):
+                found_archive_ = True
+                zip_content_ = structmd.get_zip_content(file_)
+                struct_md_cont_list[file_] = zip_content_
+            if file_.endswith('tar.gz'):
+                found_archive_ = True
+                targz_content_ = structmd.get_targz_content(file_)
+                struct_md_cont_list[file_] = targz_content_
+        if found_archive_:
+            print(struct_md_cont_list)
+            structmd.write_structmd(dir_, struct_md_cont_list)
+
         ppn_ = str(self.ppn)
         bag.create_tar_gz("BSZ" + ppn_ + ".bag")
         hashit.hashit("BSZ" + ppn_ + ".bag.tar.gz")
