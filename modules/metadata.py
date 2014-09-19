@@ -247,7 +247,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     # premis
     for file_ in file_list:
         premis_object = ET.SubElement(xml_data,
-                                      "{https://wwik.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+                                      "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
         object_identifier = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectIdentifier")
         object_identifier_type = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierType")
         object_identifier_value = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierValue")
@@ -393,7 +393,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             screenshot_rep_has.append(rep_[rep_name_]['has_part'])
         else:
             premis_object = ET.SubElement(xml_data,
-                                          "{https://wwik.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+                                          "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
             object_identifier = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectIdentifier")
             object_identifier_type = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierType")
             object_identifier_value = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierValue")
@@ -490,7 +490,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             #todo ende
 
     # screenshot
-    premis_object = ET.SubElement(xml_data, "{https://wwik.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+    premis_object = ET.SubElement(xml_data, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
     object_identifier = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectIdentifier")
     object_identifier_type = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierType")
     object_identifier_value = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierValue")
