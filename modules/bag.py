@@ -14,6 +14,8 @@ def copy_source(source_dir):
     """
     try:
         bag_name = os.path.basename(os.path.normpath(source_dir))
+        if os.path.exists("temp_" + bag_name):
+            shutil.rmtree("temp_" + bag_name)
         shutil.copytree(source_dir, "temp_" + bag_name)
 
         return "temp_" + bag_name
