@@ -318,7 +318,14 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         object_environment_env_char.text = "known to work"
         object_environment_env_purpose = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
                                                                            "DLA_schema.xsd}environmentPurpose")
-        object_environment_env_purpose.text = "render"
+
+        print(file_[file_name_]['format_name'] )
+
+        if file_[file_name_]['format_name'] == '"GZIP Format"' or '"ZIP Format"':
+            object_environment_env_purpose.text = "extract"
+        else:
+            object_environment_env_purpose.text = "render"
+
         object_environment_software = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
                                                                         "DLA_schema.xsd}software")
         object_environment_software_sw_name = ET.SubElement(object_environment_software,
