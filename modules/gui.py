@@ -184,6 +184,7 @@ class get_abstracts(QtGui.QDialog, create_bag_1.Ui_create_bag_1):
             if str(file_).endswith('.zip'):
                 zip_content_ = structmd.get_zip_content(dir_ + "/data/" + str(file_))
                 struct_md_cont_list[str(file_)] = zip_content_
+                print(struct_md_cont_list[str(file_)] )
                 structmd.write_structmd(str(file_), dir_, struct_md_cont_list)
             if str(file_).endswith('.tar.gz'):
                 targz_content_ = structmd.get_targz_content(dir_ + "/data/" + str(file_))
