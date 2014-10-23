@@ -108,14 +108,24 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     :return:
     """
     creation_date = datetime.datetime.today().isoformat()
-
+    #ET.register_namespace("xs", "http://www.w3.org/2001/XMLSchema")
     ET.register_namespace("mets", "http://www.loc.gov/METS/")
     ET.register_namespace("mods", "http://www.loc.gov/mods/v3/")
     ET.register_namespace("premis", "info://lc/xmlns/premis-v2")
     ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
-    ET.register_namespace("dla", "https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd")
+    #ET.register_namespace("dla", "https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd")
 
-    root = ET.Element("{http://www.loc.gov/METS/}mets")
+    NSMAP = {'mets': 'http://www.loc.gov/METS/',
+            'mods': 'http://www.loc.gov/mods/v3/',
+            'premis': 'info://lc/xmlns/premis-v2',
+            'xlink': 'ttp://www.w3.org/1999/xlink'
+            #'dla': 'https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd'
+            }
+
+    #dla_location = "https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd"
+    #location_attribute = '{%s}' % dla_location
+
+    root = ET.Element("{http://www.loc.gov/METS/}mets", nsmap=NSMAP)
 
     # METS HEADER
     mets_hdr = ET.SubElement(root, "{http://www.loc.gov/METS/}metsHdr")
@@ -151,7 +161,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     mods_title_info_title.set("lang", add_dict['title_lang'])
     mods_title_info_title.text = sru_dict['title_info'][1]
     # subtitle
-    mods_title_info_subtitle = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3/}subtitle")
+    mods_title_info_subtitle = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3/}subTitle")
     mods_title_info_subtitle.set("lang", add_dict['subtitle_lang'])
     mods_title_info_subtitle.text = sru_dict['title_info'][2]
     # partName and partNumber
@@ -214,7 +224,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     mods_abstract.text = add_dict['abstract_reflective'].decode(encoding="utf-8")
 
     # typeofResource
-    mods_type_of_resource = ET.SubElement(mods, "{http://www.loc.gov/mods/v3/}typeofResource")
+    mods_type_of_resource = ET.SubElement(mods, "{http://www.loc.gov/mods/v3/}typeOfResource")
     mods_type_of_resource.text = sru_dict['type_of_resource']
 
     # genre
@@ -247,7 +257,10 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     # premis
     for file_ in file_list:
         premis_object = ET.SubElement(xml_data,
-                                      "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+                                 "{info://lc/xmlns/premis-v2}object")
+        premis_object.set("type", "file")
+        #dla_file = ET.SubElement(dla_object,
+        #                              "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}file")
         object_identifier = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectIdentifier")
         object_identifier_type = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierType")
         object_identifier_value = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierValue")
@@ -255,12 +268,13 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         file_name_ = file_.keys()[0]
         object_identifier_value.text = file_[file_name_]['uuid']
 
-        object_category = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectCategory")
-        object_category.text = "file"
+        #object_category = ET.SubElement(object, "{info://lc/xmlns/premis-v2}objectCategory")
+        #object_category.text = "file"
 
         object_object_characteristics = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectCharacteristics")
         object_object_characteristics_compo_level = ET.SubElement(object_object_characteristics,
                                                                   "{info://lc/xmlns/premis-v2}compositionLevel")
+        object_object_characteristics_compo_level.text = "0"
         object_object_characteristics_fixity = ET.SubElement(object_object_characteristics,
                                                                   "{info://lc/xmlns/premis-v2}fixity")
         object_object_characteristics_fixity_algo = ET.SubElement(object_object_characteristics_fixity,
@@ -298,6 +312,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         object_object_characteristics_format_registry_key.text = file_[file_name_]['format_registry_key']
 
         object_storage = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}storage")
+
         object_storage_location = ET.SubElement(object_storage, "{info://lc/xmlns/premis-v2}contentLocation")
         object_storage_location_type = ET.SubElement(object_storage_location,
                                                      "{info://lc/xmlns/premis-v2}contentLocationType")
@@ -309,15 +324,11 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         # TODO Environment-Beschreibung
         # TODO wiederholbar, d.h. Beschreibungen in Liste of Dicts
 
-        object_environment = ET.SubElement(premis_object,
-                                           "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                           "DLA_schema.xsd}environment")
+        object_environment = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}environment")
         object_environment_env_char = ET.SubElement(object_environment,
-                                                    "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                    "DLA_schema.xsd}environmentCharacteristics")
+                                                    "{info://lc/xmlns/premis-v2}environmentCharacteristics")
         object_environment_env_char.text = "known to work"
-        object_environment_env_purpose = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                           "DLA_schema.xsd}environmentPurpose")
+        object_environment_env_purpose = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}environmentPurpose")
 
         if file_[file_name_]['format_name'] == '"GZIP Format"':
             object_environment_env_purpose.text = "extract"
@@ -326,53 +337,41 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         else:
             object_environment_env_purpose.text = "render"
 
-        object_environment_software = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                        "DLA_schema.xsd}software")
+        object_environment_software = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}software")
         object_environment_software_sw_name = ET.SubElement(object_environment_software,
-                                                            "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                            "DLA_schema.xsd}swName")
+                                                            "{info://lc/xmlns/premis-v2}swName")
 
-        object_environment_software_sw_manufacturer = ET.SubElement(object_environment_software,
-                                                                    "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                    "DLA_schema.xsd}swManufacturer")
+        #object_environment_software_sw_manufacturer = ET.SubElement(object_environment_software,
+        #                                                            "{info://lc/xmlns/premis-v2}swManufacturer")
 
-        object_environment_software_sw_version = ET.SubElement(object_environment_software,
-                                                                    "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                    "DLA_schema.xsd}swVersion")
+        #object_environment_software_sw_version = ET.SubElement(object_environment_software,
+        #                                                            "{info://lc/xmlns/premis-v2}swVersion")
 
         object_environment_software_sw_version = ET.SubElement(object_environment_software,
                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
                                                                "DLA_schema.xsd}swVersion")
 
         object_environment_software_sw_type = ET.SubElement(object_environment_software,
-                                                               "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                               "DLA_schema.xsd}swType")
+                                                               "{info://lc/xmlns/premis-v2}swType")
 
         object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
-                                                            "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                            "DLA_schema.xsd}swDependency")
+                                                            "{info://lc/xmlns/premis-v2}swDependency")
 
-        object_environment_hardware = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                        "DLA_schema.xsd}hardware")
+        object_environment_hardware = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}hardware")
         object_environment_hardware_hw_name = ET.SubElement(object_environment_hardware,
-                                                            "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                            "DLA_schema.xsd}hwName")
+                                                            "{info://lc/xmlns/premis-v2}hwName")
 
-        object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
-                                                            "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                            "DLA_schema.xsd}hwManufacturer")
+        #object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
+        #                                                    "{info://lc/xmlns/premis-v2}hwManufacturer")
 
-        object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
-                                                               "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                               "DLA_schema.xsd}hwVersion")
+        #object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
+        #                                                       "{info://lc/xmlns/premis-v2}hwVersion")
 
         object_environment_hardware_hw_type = ET.SubElement(object_environment_hardware,
-                                                            "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                            "DLA_schema.xsd}hwType")
+                                                            "{info://lc/xmlns/premis-v2}hwType")
 
         object_environment_hardware_hw_other_info = ET.SubElement(object_environment_hardware,
-                                                                  "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                  "DLA_schema.xsd}hwOtherInformation")
+                                                                  "{info://lc/xmlns/premis-v2}hwOtherInformation")
 
         object_relationship = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}relationship")
         object_relationship_type = ET.SubElement(object_relationship, "{info://lc/xmlns/premis-v2}relationshipType")
@@ -400,78 +399,66 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             screenshot_rep_has.append(rep_[rep_name_]['has_part'])
         else:
             premis_object = ET.SubElement(xml_data,
-                                          "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+                                          "{info://lc/xmlns/premis-v2}object")
+            premis_object.set("type", "representation")
+            #dla_rep = ET.SubElement(premis_object,
+            #                        "{info://lc/xmlns/premis-v2}representation")
+
             object_identifier = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectIdentifier")
             object_identifier_type = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierType")
             object_identifier_value = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierValue")
             object_identifier_type.text = "UUID"
             object_identifier_value.text = rep_[rep_name_]['uuid']
 
-            object_category = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectCategory")
-            object_category.set("type", rep_[rep_name_]['cat'])
-            object_category.text = "representation"
+            #object_category = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectCategory")
+            #premis_object.set("type", rep_[rep_name_]['cat'])
+            #object_category.set("type", rep_[rep_name_]['cat'])
+            #object_category.text = "representation"
 
-            object_environment = ET.SubElement(premis_object,
-                                               "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                               "DLA_schema.xsd}environment")
+            object_environment = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}environment")
             object_environment_env_char = ET.SubElement(object_environment,
-                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                        "DLA_schema.xsd}environmentCharacteristics")
+                                                        "{info://lc/xmlns/premis-v2}environmentCharacteristics")
             object_environment_env_char.text = "known to work"
-            object_environment_env_purpose = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                               "DLA_schema.xsd}environmentPurpose")
+            object_environment_env_purpose = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}environmentPurpose")
             object_environment_env_purpose.text = "render"
 
+            # TODO if zip or gzip extract wie oben
+
             # software
-            object_environment_software = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                            "DLA_schema.xsd}software")
+            object_environment_software = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}software")
             object_environment_software_sw_name = ET.SubElement(object_environment_software,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}swName")
+                                                                "{info://lc/xmlns/premis-v2}swName")
 
-            object_environment_software_sw_manufacturer = ET.SubElement(object_environment_software,
-                                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                        "DLA_schema.xsd}swManufacturer")
+            #object_environment_software_sw_manufacturer = ET.SubElement(object_environment_software,
+            #                                                            "{info://lc/xmlns/premis-v2}swManufacturer")
 
             object_environment_software_sw_version = ET.SubElement(object_environment_software,
-                                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                        "DLA_schema.xsd}swVersion")
+                                                                        "{info://lc/xmlns/premis-v2}swVersion")
 
-            object_environment_software_sw_version = ET.SubElement(object_environment_software,
-                                                                   "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                   "DLA_schema.xsd}swVersion")
 
             object_environment_software_sw_type = ET.SubElement(object_environment_software,
-                                                                   "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                   "DLA_schema.xsd}swType")
+                                                                   "{info://lc/xmlns/premis-v2}swType")
 
             object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}swDependency")
+                                                                "{info://lc/xmlns/premis-v2}swDependency")
 
             # hardware
-            object_environment_hardware = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                            "DLA_schema.xsd}hardware")
+            object_environment_hardware = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}hardware")
 
             object_environment_hardware_hw_name = ET.SubElement(object_environment_hardware,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}hwName")
+                                                                "{info://lc/xmlns/premis-v2}hwName")
 
-            object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}hwManufacturer")
+            #object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
+            #                                                    "{info://lc/xmlns/premis-v2}hwManufacturer")
 
-            object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
-                                                                   "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                   "DLA_schema.xsd}hwVersion")
+            #object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
+            #                                                       "{info://lc/xmlns/premis-v2}hwVersion")
 
             object_environment_hardware_hw_type = ET.SubElement(object_environment_hardware,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}hwType")
+                                                                "{info://lc/xmlns/premis-v2}hwType")
 
             object_environment_hardware_hw_other_info = ET.SubElement(object_environment_hardware,
-                                                                      "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                      "DLA_schema.xsd}hwOtherInformation")
+                                                                      "{info://lc/xmlns/premis-v2}hwOtherInformation")
 
             object_relationship = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}relationship")
             object_relationship_type = ET.SubElement(object_relationship, "{info://lc/xmlns/premis-v2}relationshipType")
@@ -497,72 +484,62 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             #todo ende
 
     # screenshot
-    premis_object = ET.SubElement(xml_data, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+    # premis_object = ET.SubElement(xml_data, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}object")
+    premis_object = ET.SubElement(xml_data,
+                                  "{info://lc/xmlns/premis-v2}object")
+    premis_object.set("type", "representation")
+
     object_identifier = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectIdentifier")
     object_identifier_type = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierType")
     object_identifier_value = ET.SubElement(object_identifier, "{info://lc/xmlns/premis-v2}objectIdentifierValue")
     object_identifier_type.text = "UUID"
     object_identifier_value.text = screenshot_rep_is
-    object_category = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectCategory")
-    object_category.set("type", "screenshot")
-    object_category.text = "representation"
-    object_environment = ET.SubElement(premis_object, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                      "DLA_schema.xsd}environment")
-    object_environment_env_char = ET.SubElement(object_environment,"{https://wwik-prod.dla-marbach.de/line/"
-                                                                   "Projektpapiere/DLA_schema.xsd}environmentCharacteristics")
+
+    #object_category = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}objectCategory")
+    #object_category.set("type", "screenshot")
+    #premis_object.set("type", "screenshot")
+    #object_category.text = "representation"
+
+    object_environment = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}environment")
+    object_environment_env_char = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}environmentCharacteristics")
     object_environment_env_char.text = "known to work"
-    object_environment_env_purpose = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/"
-                                                                       "line/Projektpapiere/DLA_schema.xsd}environmentPurpose")
+    object_environment_env_purpose = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}environmentPurpose")
     object_environment_env_purpose.text = "render"
-    object_environment_software = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                    "DLA_schema.xsd}software")
+    object_environment_software = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}software")
     object_environment_software_sw_name = ET.SubElement(object_environment_software,
-                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                        "DLA_schema.xsd}swName")
+                                                        "{info://lc/xmlns/premis-v2}swName")
 
-    object_environment_software_sw_manufacturer = ET.SubElement(object_environment_software,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}swManufacturer")
+    #object_environment_software_sw_manufacturer = ET.SubElement(object_environment_software,
+    #                                                            "{info://lc/xmlns/premis-v2}swManufacturer")
 
     object_environment_software_sw_version = ET.SubElement(object_environment_software,
-                                                           "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                           "DLA_schema.xsd}swVersion")
+                                                           "{info://lc/xmlns/premis-v2}swVersion")
 
-    object_environment_software_sw_version = ET.SubElement(object_environment_software,
-                                                           "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                           "DLA_schema.xsd}swVersion")
 
     object_environment_software_sw_type = ET.SubElement(object_environment_software,
-                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                        "DLA_schema.xsd}swType")
+                                                        "{info://lc/xmlns/premis-v2}swType")
 
-    object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
-                                                              "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                              "DLA_schema.xsd}swDependency")
+    #object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
+    #                                                          "{info://lc/xmlns/premis-v2}swDependency")
 
     # hardware
-    object_environment_hardware = ET.SubElement(object_environment, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                    "DLA_schema.xsd}hardware")
+    object_environment_hardware = ET.SubElement(object_environment, "{info://lc/xmlns/premis-v2}hardware")
 
     object_environment_hardware_hw_name = ET.SubElement(object_environment_hardware,
-                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                        "DLA_schema.xsd}hwName")
+                                                        "{info://lc/xmlns/premis-v2}hwName")
 
-    object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
-                                                                "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}hwManufacturer")
+    #object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
+    #                                                            "{info://lc/xmlns/premis-v2}hwManufacturer")
 
-    object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
-                                                           "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                           "DLA_schema.xsd}hwVersion")
+    #object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
+    #                                                       "{info://lc/xmlns/premis-v2}hwVersion")
 
     object_environment_hardware_hw_type = ET.SubElement(object_environment_hardware,
-                                                        "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                        "DLA_schema.xsd}hwType")
+                                                        "{info://lc/xmlns/premis-v2}hwType")
 
     object_environment_hardware_hw_other_info = ET.SubElement(object_environment_hardware,
-                                                              "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                              "DLA_schema.xsd}hwOtherInformation")
+                                                              "{info://lc/xmlns/premis-v2}hwOtherInformation")
+
     object_relationship = ET.SubElement(premis_object, "{info://lc/xmlns/premis-v2}relationship")
     object_relationship_type = ET.SubElement(object_relationship, "{info://lc/xmlns/premis-v2}relationshipType")
     object_relationship_type.text = "structural"
@@ -597,14 +574,16 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         moving_wall_date = ""
     rights_md_access.text = access_condition + moving_wall_date
 
-    rights_md_copyright = ET.SubElement(rights_md_mods, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                        "DLA_schema.xsd}copyright")
-    rights_md_rights_holder = ET.SubElement(rights_md_copyright, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                 "DLA_schema.xsd}rights.holder")
+    #rights_md_copyright = ET.SubElement(rights_md_mods, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
+    #                                                    "DLA_schema.xsd}copyright")
+
+    #rights_md_rights_holder = ET.SubElement(rights_md_copyright, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
+    #                                                             "DLA_schema.xsd}rights.holder")
+
     for rightsholder in add_dict['rights_holder']:
-        rights_md_name = ET.SubElement(rights_md_rights_holder, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/"
-                                                                "DLA_schema.xsd}name")
-        rights_md_name.text = rightsholder
+        rights_md_holder = ET.SubElement(rights_md_mods, "{http://www.loc.gov/mods/v3/}accessCondition")
+        rights_md_holder.set("type", "use and reproduction")
+        rights_md_holder.text = rightsholder
 
     # fileSec
     file_sec_uuid = str(uuid.uuid4())

@@ -30,7 +30,13 @@ class menu_(QtGui.QDialog, menu):
         self.connect(self.b_quit, QtCore.SIGNAL("clicked()"), self.onAbbrechen)
 
     def onDownload(self):
-        QtGui.QMessageBox.question(self, 'Information', "Noch nicht implementiert.", QtGui.QMessageBox.Ok)
+        crawl_archiv_, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', "Crawl-Archiv angeben: ")
+        ret_code_ = subprocess.check_output([sys.executable, 'modules/ftpmod_down.py', crawl_archiv_])
+        if ret_code_ == 0:
+            QtGui.QMessageBox.question(self, 'Information', "Crawl-Archiv erfolgreich nach temp/ heruntergeladen.")
+        else:
+            QtGui.QMessageBox.question(self, 'Information', "Es ist ein Fehler aufgetreten. "
+                                                            "Hashsummen sind nicht identisch.")
 
     def onCreateBag(self):
         self.create_bag_window = create_bag_()
@@ -184,7 +190,6 @@ class get_abstracts(QtGui.QDialog, create_bag_1.Ui_create_bag_1):
             if str(file_).endswith('.zip'):
                 zip_content_ = structmd.get_zip_content(dir_ + "/data/" + str(file_))
                 struct_md_cont_list[str(file_)] = zip_content_
-                print(struct_md_cont_list[str(file_)] )
                 structmd.write_structmd(str(file_), dir_, struct_md_cont_list)
             if str(file_).endswith('.tar.gz'):
                 targz_content_ = structmd.get_targz_content(dir_ + "/data/" + str(file_))
