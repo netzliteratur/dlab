@@ -68,8 +68,12 @@ def parse_bsz_sru_infos(response):
         if child.attrib['id'] == '021A':
             for subfield in child:
                 if subfield.attrib['id'] == 'a':
-                    non_sort = subfield.text.split("@")[0]
-                    title = subfield.text.split("@")[1]
+                    if "@" in subfield.text:
+                        non_sort = subfield.text.split("@")[0]
+                        title = subfield.text.split("@")[1]
+                    else:
+                        non_sort = ""
+                        title = subfield.text
                 if subfield.attrib['id'] == 'd':
                     sub_title = subfield.text
                 if subfield.attrib['id'] == 'h':
