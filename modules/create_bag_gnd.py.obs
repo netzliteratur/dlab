@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'create_bag_gnd.ui'
+#
+# Created: Wed Sep 10 11:33:52 2014
+#      by: PyQt4 UI code generator 4.11.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt4 import QtCore, QtGui
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+class Ui_create_bag_gnd(object):
+    def setupUi(self, create_bag_gnd):
+        create_bag_gnd.setObjectName(_fromUtf8("create_bag_gnd"))
+        create_bag_gnd.resize(596, 580)
+        self.verticalLayoutWidget_2 = QtGui.QWidget(create_bag_gnd)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(420, 420, 160, 80))
+        self.verticalLayoutWidget_2.setObjectName(_fromUtf8("verticalLayoutWidget_2"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.verticalLayout_2.setMargin(0)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.b_continue = QtGui.QPushButton(self.verticalLayoutWidget_2)
+        self.b_continue.setObjectName(_fromUtf8("b_continue"))
+        self.verticalLayout_2.addWidget(self.b_continue)
+        self.b_cancel = QtGui.QPushButton(self.verticalLayoutWidget_2)
+        self.b_cancel.setObjectName(_fromUtf8("b_cancel"))
+        self.verticalLayout_2.addWidget(self.b_cancel)
+        self.formLayoutWidget = QtGui.QWidget(create_bag_gnd)
+        self.formLayoutWidget.setGeometry(QtCore.QRect(30, 60, 381, 42))
+        self.formLayoutWidget.setObjectName(_fromUtf8("formLayoutWidget"))
+        self.formLayout = QtGui.QFormLayout(self.formLayoutWidget)
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
+        self.formLayout.setMargin(0)
+        self.formLayout.setObjectName(_fromUtf8("formLayout"))
+        self.label = QtGui.QLabel(self.formLayoutWidget)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label)
+        self.e_gnd = QtGui.QLineEdit(self.formLayoutWidget)
+        self.e_gnd.setObjectName(_fromUtf8("e_gnd"))
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.e_gnd)
+        self.label_2 = QtGui.QLabel(self.formLayoutWidget)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_2)
+
+        self.retranslateUi(create_bag_gnd)
+        QtCore.QMetaObject.connectSlotsByName(create_bag_gnd)
+        create_bag_gnd.setTabOrder(self.e_gnd, self.b_continue)
+        create_bag_gnd.setTabOrder(self.b_continue, self.b_cancel)
+
+    def retranslateUi(self, create_bag_gnd):
+        create_bag_gnd.setWindowTitle(_translate("create_bag_gnd", "Dialog", None))
+        self.b_continue.setText(_translate("create_bag_gnd", "Weiter", None))
+        self.b_cancel.setText(_translate("create_bag_gnd", "Abbrechen", None))
+        self.label.setText(_translate("create_bag_gnd", "GND-URI", None))
+        self.label_2.setText(_translate("create_bag_gnd", "Angabe GND von", None))
+

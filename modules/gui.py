@@ -136,8 +136,10 @@ class create_bag_(QtGui.QDialog, create_bag_0.Ui_create_bag_0):
         except IOError, err:
             QtGui.QMessageBox.question(self, 'Information', "Es ist ein Fehler aufgetreten: " + str(err), QtGui.QMessageBox.Ok)
 
-        response = metadata.fetch_infos_sru(str(ppn))
-        sru_dict = metadata.parse_sru_infos(response)
+        #response = metadata.fetch_infos_sru(str(ppn))
+
+        response = metadata.fetch_infos_bsz_sru(str(ppn))
+        sru_dict = metadata.parse_bsz_sru_infos(response)
         for author in sru_dict['author_info']:
             given_ = author['given']
             family_ = author['family']

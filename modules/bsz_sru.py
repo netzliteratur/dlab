@@ -7,8 +7,8 @@ config file has to be passed with
 parameter -c. The search term has to be
 passed with parameter -s.
 """
-__date__ = '20140417'
-__version__ = '0.1'
+__date__ = '20141029'
+__version__ = '0.2'
 __status__ = 'Developing'
 __author__ = 'steffen fritz'
 __contact__ = 'fritz@dla-marbach.de'
@@ -20,6 +20,7 @@ import sys
 import urllib
 import xml.etree.ElementTree as ET
 import ConfigParser
+#from metadata import parse_bsz_sru_infos as parse_infos
 
 
 def read_config(path):
@@ -29,32 +30,24 @@ def read_config(path):
     config = ConfigParser.RawConfigParser()
     config.read(path)
 
-    sru_base_url = config.get("SETTINGS", "SRU_Base_URL")
-    sru_database = config.get("SETTINGS", "SRU_Database")
-    record_schema = config.get("SETTINGS", "Record_Schema")
-    q_attrib = config.get("SETTINGS", "Query_Attribute")
+    user_name = config.get("SETTINGS", "USER_NAME")
+    user_passwd = config.get("SETTINGS", "USER_PASSWD")
 
-    return sru_base_url, sru_database, record_schema, q_attrib
+    return user_name, user_passwd 
 
 
-def search_retrieve(base_url, searchterm, db, schema, q_attrib):
+def search_retrieve(searchterm, user_name, user_passwd):
     """
     fetch information as picaxml
     """
-    url = base_url + db + '?' + \
-        "version=1.1&operation=searchRetrieve&query=pica." + \
-        q_attrib + \
-        "%3D" + \
-        searchterm + \
-        "&maximumRecords=10&recordSchema=" + \
-        schema
+    url = "http://castor.bsz-bw.de:8000/sru/DB=1.1&username=" + user_name + \
+          "/password=" + user_passwd + "/?query=pica.ppn+%3D+%22" + searchterm + \
+          "%22&version=1.1&operation=searchRetrieve&recordSchema=ppxml" + \
+          "&maximumRecords=1&startRecords=1&startRecord=1&recordPacking=xml"
     urlh = urllib.urlopen(url)
     response = urlh.read()
     urlh.close()
     
-    # debug
-    print(response)
-
     return response
 
 
@@ -64,11 +57,11 @@ def main():
     execute main function
     """
     if len(sys.argv) < 3:
-        print("USAGE: python sru.py -c CONFIGFILE -s SEARCHTERM")
+        print("USAGE: python bsz_sru.py -c CONFIGFILE -s PPN")
         sys.exit(0)
     try:
         c = sys.argv.index('-c')
-        base_url, database, schema, q_attrib = read_config(sys.argv[c + 1])
+        user_name, user_passwd = read_config(sys.argv[c + 1])
     except IOError, err:
         print(str(err))
         sys.exit(1)
@@ -76,12 +69,10 @@ def main():
     try:
         s = sys.argv.index('-s')
         searchterm = sys.argv[s + 1]
-        response = search_retrieve(base_url, searchterm, database, schema, q_attrib)
-        
-        # aggregate project relevant informations
-        meta_dict = extract_information(response)
-        for element in meta_dict['lang']:
-            print(element)
+        response = search_retrieve(searchterm, user_name, user_passwd)
+        return_dict = parse_infos(response)
+
+        print(return_dict)
 
     except RuntimeError, err:
         print(str(err))
