@@ -79,9 +79,19 @@ def parse_bsz_sru_infos(response):
                 if subfield.attrib['id'] == 'h':
                     author_list = subfield.text.split("; ")
                     for element in author_list:
+                        print("debug: " + element)
                         author_temp = element.split(" ")
-                        family_name = author_temp[-1]
-                        given_name = author_temp[0]
+                        if len(author_temp) == 1:
+                            family_name = author_temp[0]
+                            given_name = ""
+                        else:
+                            if author_temp[0] == "von":
+                                family_name = author_temp[-1]
+                                given_name = author_temp[1]
+                            else:
+                                family_name = author_temp[-1]
+                                given_name = author_temp[0]
+
                         author_dict_list.append({'family': family_name, 'given': given_name})
 
         # lang
