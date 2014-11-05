@@ -286,7 +286,10 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         mods_name.set("authorityURI", "http://www.dnb.de/gnd")
         mods_name.set("valueURI", add_dict["gnd_uri_" + str(author_counter)])
         mods_name_name_part = ET.SubElement(mods_name, "{http://www.loc.gov/mods/v3}namePart")
-        mods_name_name_part.text = entry['family'] + ", " + entry['given']
+        if entry['given'] != "":
+            mods_name_name_part.text = entry['family'] + ", " + entry['given']
+        else:
+            mods_name_name_part.text = entry['family']
         mods_name_role = ET.SubElement(mods_name, "{http://www.loc.gov/mods/v3}role")
         mods_name_role_term = ET.SubElement(mods_name_role, "{http://www.loc.gov/mods/v3}roleTerm")
         mods_name_role_term.set("type", "text")
