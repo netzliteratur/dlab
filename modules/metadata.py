@@ -111,8 +111,12 @@ def parse_bsz_sru_infos(response):
         # TODO part number
         if child.attrib['id'] == '036C':
             for subfield in child:
-                if subfield.attrib['id'] == 'l':
-                   part_name = subfield.text
+                part_name = subfield.text
+
+            swap_title_part = title
+            title = part_name
+            part_name = swap_title_part
+
 
     return_dict['author_info'] = author_dict_list
     return_dict['origin_info'] = date_created
@@ -270,14 +274,17 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
     mods_title_info_subtitle.set("lang", add_dict['subtitle_lang'])
     mods_title_info_subtitle.text = sru_dict['title_info'][2]
     # partName and partNumber
-    mods_title_info_part_name = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3}partName")
-    mods_title_info_part_name.text = sru_dict['title_info'][3]
-    mods_title_info_part_number = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3}partNumber")
-    mods_title_info_part_number.text = sru_dict['title_info'][4]
+    if sru_dict['title_info'][3] != "":
+        mods_title_info_part_name = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3}partName")
+        mods_title_info_part_name.text = sru_dict['title_info'][3]
+    if sru_dict['title_info'][4] != "":
+        mods_title_info_part_number = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3}partNumber")
+        mods_title_info_part_number.text = sru_dict['title_info'][4]
     # nonsort
-    mods_title_info_nonsort = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3}nonSort")
-    mods_title_info_nonsort.set("lang", add_dict['title_lang'])
-    mods_title_info_nonsort.text = sru_dict['title_info'][0]
+    if sru_dict['title_info'][0] != "":
+        mods_title_info_nonsort = ET.SubElement(mods_title_info, "{http://www.loc.gov/mods/v3}nonSort")
+        mods_title_info_nonsort.set("lang", add_dict['title_lang'])
+        mods_title_info_nonsort.text = sru_dict['title_info'][0]
     # name
     author_counter = 0
     for entry in sru_dict['author_info']:
