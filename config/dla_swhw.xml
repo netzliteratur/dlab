@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Naming convention: National Software Reference Library -->
+<!-- Types: renderer, ancillary, operating system, driver, server, editor, file archiver -->
+<!-- PRONOM Registry Keys -->
+<swhwCatalog>
+  <!--Software Section -->
+  <swEntries>
+	<swEntry ID="0">
+	  <swManufacturer>Adobe Systems Incorporated</swManufacturer>
+	  <swName>Adobe Reader</swName>
+	  <swVersion>9.5.5</swVersion>
+	  <swType>renderer</swType>
+	  <swDependency />
+	  <swYear>2010</swYear>
+	  <swSupportedFormats>
+		<swSupportedFormat>fmt/14</swSupportedFormat>
+		<swSupportedFormat>fmt/15</swSupportedFormat>
+		<swSupportedFormat>fmt/16</swSupportedFormat>
+		<swSupportedFormat>fmt/17</swSupportedFormat>
+		<swSupportedFormat>fmt/18</swSupportedFormat>
+		<swSupportedFormat>fmt/19</swSupportedFormat>
+		<swSupportedFormat>fmt/20</swSupportedFormat>
+		<swSupportedFormat>fmt/95</swSupportedFormat>
+		<swSupportedFormat>fmt/144</swSupportedFormat>
+		<swSupportedFormat>fmt/145</swSupportedFormat>
+		<swSupportedFormat>fmt/146</swSupportedFormat>
+		<swSupportedFormat>fmt/147</swSupportedFormat>
+		<swSupportedFormat>fmt/148</swSupportedFormat>
+		<swSupportedFormat>fmt/157</swSupportedFormat>
+		<swSupportedFormat>fmt/158</swSupportedFormat>
+		<swSupportedFormat>fmt/276</swSupportedFormat>
+		<swSupportedFormat>fmt/354</swSupportedFormat>
+		<swSupportedFormat>fmt/476</swSupportedFormat>
+		<swSupportedFormat>fmt/477</swSupportedFormat>
+		<swSupportedFormat>fmt/478</swSupportedFormat>
+		<swSupportedFormat>fmt/479</swSupportedFormat>
+		<swSupportedFormat>fmt/480</swSupportedFormat>
+		<swSupportedFormat>fmt/481</swSupportedFormat>
+		<swSupportedFormat>fmt/488</swSupportedFormat>
+		<swSupportedFormat>fmt/489</swSupportedFormat>
+		<swSupportedFormat>fmt/490</swSupportedFormat>
+		<swSupportedFormat>fmt/491</swSupportedFormat>
+		<swSupportedFormat>fmt/492</swSupportedFormat>
+		<swSupportedFormat>fmt/493</swSupportedFormat>
+	  </swSupportedFormats>
+	</swEntry>
+	<swEntry ID="1">
+	  <swManufacturer>Internet Archive</swManufacturer>
+	  <swName>wayback</swName>
+	  <swVersion>1.6.0</swVersion>
+	  <swType>server</swType>
+	  <swDependency />
+	  <swYear>2011</swYear>
+	  <swSupportedFormats>
+		<swSupportedFormat>fmt/289</swSupportedFormat>
+	  </swSupportedFormats>
+	</swEntry>
+	<swEntry ID="2">
+	  <swManufacturer>Free Software Foundation, Inc.</swManufacturer>
+	  <swName>GNU tar</swName>
+	  <swVersion>1.28</swVersion>
+	  <swType>archiver</swType>
+	  <swDependency />
+	  <swYear>2014</swYear>
+	  <swSupportedFormats>
+		<swSupportedFormat>fmt/265</swSupportedFormat>
+		<swSupportedFormat>fmt/266</swSupportedFormat>
+	  </swSupportedFormats>
+	</swEntry>
+	<swEntry ID="3">
+	  <swManufacturer>Daniel Friesel</swManufacturer>
+	  <swName>feh</swName>
+	  <swVersion>2.12</swVersion>
+	  <swType>renderer</swType>
+	  <swDependency>4</swDependency>
+	  <swYear>2014</swYear>
+	  <swSupportedFormats>
+		<swSupportedFormat>fmt/11</swSupportedFormat>
+		<swSupportedFormat>fmt/12</swSupportedFormat>
+		<swSupportedFormat>fmt/13</swSupportedFormat>
+		<swSupportedFormat>fmt/41</swSupportedFormat>
+		<swSupportedFormat>fmt/42</swSupportedFormat>
+		<swSupportedFormat>fmt/43</swSupportedFormat>
+		<swSupportedFormat>fmt/44</swSupportedFormat>
+		<swSupportedFormat>fmt/152</swSupportedFormat>
+		<swSupportedFormat>fmt/153</swSupportedFormat>
+		<swSupportedFormat>fmt/154</swSupportedFormat>
+		<swSupportedFormat>fmt/155</swSupportedFormat>
+		<swSupportedFormat>fmt/156</swSupportedFormat>
+		<swSupportedFormat>fmt/353</swSupportedFormat>
+		<swSupportedFormat>fmt/409</swSupportedFormat>
+		<swSupportedFormat>fmt/114</swSupportedFormat>
+		<swSupportedFormat>fmt/115</swSupportedFormat>
+		<swSupportedFormat>fmt/116</swSupportedFormat>
+		<swSupportedFormat>fmt/117</swSupportedFormat>
+		<swSupportedFormat>fmt/118</swSupportedFormat>
+		<swSupportedFormat>fmt/119</swSupportedFormat>
+		<swSupportedFormat>x-fmt/270</swSupportedFormat>
+		<swSupportedFormat>fmt/3</swSupportedFormat>
+		<swSupportedFormat>fmt/4</swSupportedFormat>
+		<swSupportedFormat>x-fmt/208</swSupportedFormat>
+		<swSupportedFormat>fmt/402</swSupportedFormat>
+		<swSupportedFormat>x-fmt/367</swSupportedFormat>
+		<swSupportedFormat>fmt/338</swSupportedFormat>
+		<swSupportedFormat>x-fmt/424</swSupportedFormat>
+	  </swSupportedFormats>
+	</swEntry>
+	<swEntry ID="4">
+	  <swManufacturer>Enlightenment development team</swManufacturer>
+	  <swName>imlib2</swName>
+	  <swVersion>1.4.6</swVersion>
+	  <swType>ancillary</swType>
+	  <swDependency/>
+	  <swYear>2014</swYear>/>
+	  <swSupportedFormats >
+		<swSupportedFormat/>
+	  </swSupportedFormats>
+	</swEntry>
+	<swEntry ID="5">
+	  <swManufacturer>Free Software Foundation, Inc.</swManufacturer>
+	  <swName>tar</swName>
+	  <swVersion>1.28</swVersion>
+	  <swType>file archiver</swType>
+	  <swDependency />
+	  <swYear>2014</swYear>
+	  <swSupportedFormats>
+		<swSupportedFormat>x-fmt/266</swSupportedFormat>
+	  </swSupportedFormats>
+	</swEntry>
+  </swEntries>
+  <hwEntries>
+	<hwEntry ID="0">
+	  <hwManufacturer>Fujitsu</hwManufacturer>
+	  <hwName>P24W-6 LED</hwName>
+	  <hwType>display</hwType>
+	  <hwOtherInformation>Video-Input: DVI-D (HDCP)</hwOtherInformation>
+	  <hwOtherInformation>Color depth: 32</hwOtherInformation>
+	  <hwOtherInformation>Refresh rate: 60</hwOtherInformation>
+	</hwEntry>
+	<hwEntry ID="1">
+	  <hwManufacturer>Intel</hwManufacturer>
+	  <hwName>Core 2 Duo CPU E8400</hwName>
+	  <hwType>Processor</hwType>
+	  <hwOtherInformation>2999MHz</hwOtherInformation>
+	  <hwOtherInformation>2 cores</hwOtherInformation>
+	</hwEntry>
+	<hwEntry ID="2">
+	  <hwManufacturer>Fujitsu Siemens</hwManufacturer>
+	  <hwName>D2812-A1</hwName>
+	  <hwType>Motherboard</hwType>
+	  <hwOtherInformation>Version: S26361-D2812-A1</hwOtherInformation>
+	</hwEntry>
+	<hwEntry ID="3">
+	  <hwManufacturer>Intel</hwManufacturer>
+	  <hwName>Q45/Q43 Express Chipset</hwName>
+	  <hwType>Integrated graphics processor</hwType>
+	  <hwOtherInformation></hwOtherInformation>
+	</hwEntry>
+	  <hwEntry ID="4">
+	  <hwManufacturer>Intel</hwManufacturer>
+	  <hwName>ICH5/ICH5R AC'97 Audio Controller</hwName>
+	  <hwType>Integrated Sound Card</hwType>
+	  <hwOtherInformation></hwOtherInformation>
+	</hwEntry>
+  </hwEntries>
+</swhwCatalog>
