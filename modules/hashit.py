@@ -3,8 +3,7 @@ import hashlib
 
 def hashit(bag_file_):
     """
-
-    :return:
+    create hash from bag
     """
     BLOCKSIZE = 65536
     hasher = hashlib.sha512()

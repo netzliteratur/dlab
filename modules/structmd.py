@@ -7,7 +7,7 @@ from lxml import etree as ET
 
 def get_zip_content(archive_):
     """
-    :return:
+    :return dict cont_dict_:
     """
     cont_dict_ = {}
     if zipfile.is_zipfile(str(archive_)):
@@ -22,7 +22,7 @@ def get_zip_content(archive_):
 
 def get_targz_content(archive_):
     """
-    :return:
+    :return dict cont_dict :
     """
     cont_dict_ = {}
     if tarfile.is_tarfile(str(archive_)):
@@ -37,18 +37,18 @@ def write_structmd(source_file, temp_dir, file_list_):
     """
     :return:
     """
-    ET.register_namespace("dla", "https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd")
-    root = ET.Element("{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}fileMap")
+    ET.register_namespace("dla", "https://wwik-prod.dla-marbach.de/line/")
+    root = ET.Element("{https://wwik-prod.dla-marbach.de/line/}fileMap")
     for archive_entry_ in file_list_:
         for element_ in file_list_[archive_entry_]:
             if os.path.isdir(element_):
-                dir_ = ET.SubElement(root, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}dir")
+                dir_ = ET.SubElement(root, "{https://wwik-prod.dla-marbach.de/line/}dir")
                 dir_.set("name", element_)
             else:
-                file_ = ET.SubElement(root, "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}file")
+                file_ = ET.SubElement(root, "{https://wwik-prod.dla-marbach.de/line/}file")
                 file_.set("name", element_)
                 file_size = ET.SubElement(file_,
-                                          "{https://wwik-prod.dla-marbach.de/line/Projektpapiere/DLA_schema.xsd}size")
+                                          "{https://wwik-prod.dla-marbach.de/line/}size")
                 file_size.text = str(file_list_[archive_entry_][element_])
 
     tree = ET.ElementTree(root)

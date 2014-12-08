@@ -6,6 +6,10 @@ from subprocess import check_output
 
 
 def read_config():
+    """
+    read bag.cfg file
+    :return string server_, port_, user_, passwd_, dir_:
+    """
     config = ConfigParser.RawConfigParser()
     config.read("config/bag.cfg")
 
@@ -20,7 +24,8 @@ def read_config():
 
 def get_bszcrawl(server_, port_, user_, passwd_, crawl_file_, dir_):
     """
-    :return:
+    get crawl archive from server
+    :return string hash_local_[1], hash_sent_:
     """
     transport = paramiko.Transport((server_, int(port_)))
     transport.connect(username=user_, password=passwd_)
@@ -42,13 +47,12 @@ def get_bszcrawl(server_, port_, user_, passwd_, crawl_file_, dir_):
 
 def main():
     """
-    :return:
+    :return int 0 or 1:
     """
     bag_file_ = sys.argv[1]
     server_, port_, user_, passwd_, dir_ = read_config()
     hash_local_, hash_sent_ = get_bszcrawl(server_, port_, user_, passwd_, bag_file_, dir_)
 
-    # TODO Hashvergleich und Meldung nach Rückgab ein gui.py
     print(hash_local_[1:])
     print(hash_sent_)
     if hash_local_[1:] == hash_sent_:

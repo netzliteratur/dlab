@@ -11,7 +11,7 @@ from subprocess import check_output
 def identify_file_pronom(file_):
     """
     using fido
-    :return:
+    :return string format_name, format_registry_key:
     """
     fido_check = check_output([sys.executable, "externals/fido/fido/fido.py", file_])
     first_result = re.search('OK,(.+?)\n', fido_check).group(1).split(",")
@@ -26,8 +26,7 @@ def id_file_rep(bag_dir):
     """
     identify object category
     create uuids for files and representations
-
-    :return:
+    :return list file_list, rep_list, rep_bool:
     """
     payload_dir = bag_dir + "/data/"
     file_list = []

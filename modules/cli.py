@@ -55,7 +55,6 @@ def get_add_infos(sru_dict):
 
 def get_config():
     """
-
     :return:
     """
     print("* * * Konfiguration * * *\n")
@@ -91,6 +90,10 @@ def menu():
     """
     cli menu
     :return: char
+    """
+    print("CLI aktuell nicht unterstützt. dlab wird beendet.\n")
+    sys.exit(0)
+
     """
     print("\n+ + + DLA Bagger - v0.1 + + +\n\n"
           "+++ [E]rstelle Bag\n"
@@ -140,3 +143,4 @@ def menu():
     else:
         print("Ungültige Eingabe")
         menu()
+        """

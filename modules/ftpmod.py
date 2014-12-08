@@ -6,6 +6,10 @@ import paramiko
 
 
 def read_config():
+    """
+    read bag.cfg file
+    :return string server_, port_, user_, passwd_, dir_:
+    """
     config = ConfigParser.RawConfigParser()
     config.read("config/bag.cfg")
 
@@ -19,7 +23,10 @@ def read_config():
 
 
 def send_bag(server_, port_, user_, passwd_, bag_file_, dir_):
-    #paramiko.common.logging.basicConfig(level=paramiko.common.DEBUG)
+    """
+    put bag via sftp
+    :return int 0:
+    """
     transport = paramiko.Transport((server_, int(port_)))
     transport.connect(username=user_, password=passwd_)
     sftp = paramiko.SFTPClient.from_transport(transport)
@@ -31,7 +38,7 @@ def send_bag(server_, port_, user_, passwd_, bag_file_, dir_):
 
 def main():
     """
-    :return:
+    empty doc string
     """
     bag_file_ = sys.argv[1]
     server_, port_, user_, passwd_, dir_ = read_config()

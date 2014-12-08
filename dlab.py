@@ -4,12 +4,13 @@
 dlab creates bags
 """
 __file__ = "dlab.py"
-__version = "0.1"
-__date__ = "08/18/2014"
+__version = "1.0b"
+__date__ = "12/08/2014"
 __author__ = "steffen fritz"
 __contact__ = "fritz@dla-marbach.de"
 __license = "The MIT License (c) 2014 DLA Marbach"
-__status__ = "development"
+__status__ = "Testing"
+__maintainer__ = 'steffen fritz'
 
 import sys
 import ConfigParser

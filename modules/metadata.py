@@ -1,35 +1,16 @@
 #-*- coding:utf-8 -*-
 import sys
-import sru
 import bsz_sru
 import uuid
 import datetime
 from lxml import etree as ET
 
 
-def fetch_infos_sru(ppn):
-    """
-    read sru config file
-    search_retrieve via sru
-    :return list response:
-    """
-    try:
-        base_url, db, schema, q_attrib = sru.read_config("config/sru.cfg")
-        response = sru.search_retrieve(base_url, ppn, db, schema, q_attrib)
-
-    except IOError, err:
-        print("Konnte Metadaten nicht beziehen. Fehlermeldung: \n" +
-              str(err))
-        sys.exit(1)
-
-    return response
-
-
 def fetch_infos_bsz_sru(ppn):
     """
-    read sru config file
-    search_retrieve via sru
-    :return list response:
+    read sru_bsz.cfg file and
+    search and retrieve metadata
+    :return string response:
     """
     try:
         user_name, user_passwd = bsz_sru.read_config("config/sru_bsz.cfg")
@@ -45,7 +26,7 @@ def fetch_infos_bsz_sru(ppn):
 
 def parse_bsz_sru_infos(response):
     """
-    parse response
+    parse response from bsz_sru.search_retrieve
     :return dictionary return_dict:
     """
     return_dict = {}
@@ -127,88 +108,10 @@ def parse_bsz_sru_infos(response):
     return return_dict
 
 
-def parse_sru_infos(response):
-    """
-    :return dictionary return_dict:
-    """
-    return_dict = {}
-    author_dict_list = []
-
-    root = ET.fromstring(response)
-
-    # title info
-    non_sort = ""
-    title = ""
-    sub_title = ""
-    part_name = ""
-    part_number = ""
-
-    for child in root[2][0][2][0].findall("{http://www.loc.gov/mods/v3}titleInfo"):
-        for entry in child:
-            if entry.tag == "{http://www.loc.gov/mods/v3}nonSort":
-                non_sort = entry.text
-            if entry.tag == "{http://www.loc.gov/mods/v3}title":
-                title = entry.text
-            if entry.tag == "{http://www.loc.gov/mods/v3}subTitle":
-                sub_title = entry.text
-            if entry.tag == "{http://www.loc.gov/mods/v3}partName":
-                part_name = entry.text
-            if entry.tag == "{http://www.loc.gov/mods/v3}nonNumber":
-                part_number = entry.text
-
-    return_dict['title_info'] = [non_sort, title, sub_title, part_name, part_number]
-
-    # author info
-    for child in root[2][0][2][0].findall("{http://www.loc.gov/mods/v3}name"):
-        for entry in child:
-            if entry.attrib['type'] == "family":
-                family_name = entry.text
-            if entry.attrib['type'] == "given":
-                given_name = entry.text
-
-        author_dict_list.append({'family': family_name, 'given': given_name})
-
-    return_dict['author_info'] = author_dict_list
-
-    # origininfo
-    for child in root[2][0][2][0].findall("{http://www.loc.gov/mods/v3}originInfo"):
-        for entry in child:
-            if entry.tag == "{http://www.loc.gov/mods/v3}dateIssued":
-                date_created = entry.text
-
-    return_dict['origin_info'] = date_created
-
-    # type of resource
-    for child in root[2][0][2][0].findall("{http://www.loc.gov/mods/v3}typeOfResource"):
-        type_of_resource = child.text
-
-    return_dict['type_of_resource'] = type_of_resource
-
-    # genre
-    for child in root[2][0][2][0].findall("{http://www.loc.gov/mods/v3}physicalDescription"):
-        for entry in child:
-            # catch key errors
-            try:
-                if entry.attrib['authority'] == 'marccategory':
-                    genre = entry.text
-            except:
-                pass
-
-    return_dict['genre'] = genre
-
-    # language term
-    language_term = []
-    for child in root[2][0][2][0].findall("{http://www.loc.gov/mods/v3}language"):
-        for entry in child:
-            language_term.append(entry.text)
-
-    return_dict['language_term'] = language_term
-
-    return return_dict
-
-
 def parse_swhwdb(reg_id):
     """
+    read dla_swhw.xml file and find
+    supported file formats
     :return list sw_list, hw_list:
     """
     tree = ET.parse("config/dla_swhw.xml")
@@ -245,7 +148,7 @@ def parse_swhwdb(reg_id):
 
 def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_bool):
     """
-    :return int 0:
+    write the metadata.xml file
     """
     creation_date = datetime.datetime.today().isoformat()
     ET.register_namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance")
@@ -701,18 +604,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         object_environment_software_sw_dependency.text = sw_dep
 
     # hardware
-    # No hardware in representations
-    #object_environment_hardware = ET.SubElement(object_environment, "{info:lc/xmlns/premis-v2}hardware")
-    #object_environment_hardware_hw_name = ET.SubElement(object_environment_hardware,
-    #                                                    "{info:lc/xmlns/premis-v2}hwName")
-    #object_environment_hardware_hw_manufacturer = ET.SubElement(object_environment_hardware,
-    #                                                            "{info:lc/xmlns/premis-v2}hwManufacturer")
-    #object_environment_hardware_hw_version = ET.SubElement(object_environment_hardware,
-    #                                                       "{info:lc/xmlns/premis-v2}hwVersion")
-    #object_environment_hardware_hw_type = ET.SubElement(object_environment_hardware,
-    #                                                    "{info:lc/xmlns/premis-v2}hwType")
-    #object_environment_hardware_hw_other_info = ET.SubElement(object_environment_hardware,
-    #                                                          "{info:lc/xmlns/premis-v2}hwOtherInformation")
+    # No hardware in screenshot representations
 
     object_relationship = ET.SubElement(premis_object, "{info:lc/xmlns/premis-v2}relationship")
     object_relationship_type = ET.SubElement(object_relationship, "{info:lc/xmlns/premis-v2}relationshipType")
