@@ -127,6 +127,18 @@
 		<swSupportedFormat>x-fmt/266</swSupportedFormat>
 	  </swSupportedFormats>
 	</swEntry>
+    <swEntry ID="6">
+      <swManufacturer>VideoLAN ORGANIZATION</swManufacturer>
+      <swName>vlc</swName>
+      <swVersion>2.2.1</swVersion>
+      <swType>renderer</swType>
+      <swDependency />
+      <swYear>2015</swYear>
+      <swSupportedFormats>
+          <swSupportedFormat>fmt/199</swSupportedFormat>
+          <swSupportedFormat>fmt/596</swSupportedFormat>
+      </swSupportedFormats>
+    </swEntry>
   </swEntries>
   <hwEntries>
 	<hwEntry ID="0">
