@@ -139,6 +139,17 @@
           <swSupportedFormat>fmt/596</swSupportedFormat>
       </swSupportedFormats>
     </swEntry>
+    <swEntry ID="7">
+	  <swManufacturer>Info-ZIP</swManufacturer>
+	  <swName>UnZip</swName>
+	  <swVersion>6.0</swVersion>
+	  <swType>file archiver</swType>
+	  <swDependency />
+	  <swYear>2009</swYear>
+	  <swSupportedFormats>
+		<swSupportedFormat>x-fmt/263</swSupportedFormat>
+	  </swSupportedFormats>
+	</swEntry>
   </swEntries>
   <hwEntries>
 	<hwEntry ID="0">
