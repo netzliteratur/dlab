@@ -33,11 +33,12 @@ def parse_bsz_sru_infos(response):
     author_dict_list = []
 
     root = ET.fromstring(response)
-    
+
+
     if root[1].text != "1":
         print("Kein eindeutiger Datensatz gefunden. Breche ab.")
         sys.exit(0)
-   
+
     non_sort = ""
     title = ""
     sub_title = ""
@@ -56,7 +57,9 @@ def parse_bsz_sru_infos(response):
                         title = subfield.text
                 if subfield.attrib['id'] == 'd':
                     sub_title = subfield.text
-                if subfield.attrib['id'] == 'h':
+                
+                # changed pica+ field
+                """if subfield.attrib['id'] == 'h':
                     author_list = subfield.text.split("; ")
                     for element in author_list:
                         print("debug: " + element)
@@ -73,6 +76,24 @@ def parse_bsz_sru_infos(response):
                                 given_name = author_temp[0]
 
                         author_dict_list.append({'family': family_name, 'given': given_name})
+                """
+        if child.attrib['id'] == '028C':
+            for subfield in child:
+                if subfield.attrib['id'] == '8':
+                    print(subfield.text)
+                    author_temp = subfield.text.split(",")
+                    if len(author_temp) == 1:
+                        family_name = author_temp[0]
+                        given_name = ""
+                    else:
+                        if author_temp[0] == "von":
+                            family_name = author_temp[-1]
+                            given_name = author_temp[1]
+                        else:
+                            family_name = author_temp[-1]
+                            given_name = author_temp[0]
+
+                    author_dict_list.append({'family': family_name, 'given': given_name})
 
         # lang
         if child.attrib['id'] == '010@':
