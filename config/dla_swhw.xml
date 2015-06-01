@@ -72,7 +72,7 @@
 	  <swName>feh</swName>
 	  <swVersion>2.12</swVersion>
 	  <swType>renderer</swType>
-	  <swDependency>4</swDependency>
+	  <swDependency></swDependency>
 	  <swYear>2014</swYear>
 	  <swSupportedFormats>
 		<swSupportedFormat>fmt/11</swSupportedFormat>

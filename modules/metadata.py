@@ -489,12 +489,12 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
                 sw_name = "Internet Archive ; wayback"
                 sw_version = "1.6.0"
                 sw_type = "server"
-                sw_dep = "OpenJDK Runtime Environment 1.7.0"
+                sw_dep = ""
             elif rep_[rep_name_]['cat'] == 'screenshot':
                 sw_name = "Daniel Friesel ; feh"
                 sw_version = "2.12"
                 sw_type = "renderer"
-                sw_dep = "imlib2 1.4.6"
+                sw_dep = ""
             elif rep_[rep_name_]['cat'] == 'screencast':
                 sw_name = "vlc"
                 sw_version = "2.1.5"
