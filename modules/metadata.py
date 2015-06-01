@@ -411,10 +411,10 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
 
         object_environment_software_sw_type.text = env_list[3]
 
-        object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
-                                                                  "{info:lc/xmlns/premis-v2}swDependency")
+        #object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
+        #                                                          "{info:lc/xmlns/premis-v2}swDependency")
 
-        object_environment_software_sw_dependency.text = env_list[4]
+        #object_environment_software_sw_dependency.text = env_list[4]
 
         for hw_entry in hw_list:
             object_environment_hardware = ET.SubElement(object_environment, "{info:lc/xmlns/premis-v2}hardware")
@@ -522,10 +522,10 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
 
                 object_environment_software_sw_type.text = sw_type
 
-                if sw_dep != "":
-                    object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
-                                                                        "{info:lc/xmlns/premis-v2}swDependency")
-                    object_environment_software_sw_dependency.text = sw_dep
+                #if sw_dep != "":
+                #    object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
+                #                                                        "{info:lc/xmlns/premis-v2}swDependency")
+                #    object_environment_software_sw_dependency.text = sw_dep
 
                 # hardware
                 # No hardware in representations
@@ -597,11 +597,11 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
                                                         "{info:lc/xmlns/premis-v2}swType")
     object_environment_software_sw_type.text = "renderer"
 
-    if sw_dep != "":
-        object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
-                                                                  "{info:lc/xmlns/premis-v2}swDependency")
+    #if sw_dep != "":
+    #    object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
+    #                                                              "{info:lc/xmlns/premis-v2}swDependency")
 
-        object_environment_software_sw_dependency.text = sw_dep
+    #    object_environment_software_sw_dependency.text = sw_dep
 
     # hardware
     # No hardware in screenshot representations
