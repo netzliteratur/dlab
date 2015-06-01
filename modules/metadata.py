@@ -35,6 +35,10 @@ def parse_bsz_sru_infos(response):
     root = ET.fromstring(response)
 
 
+    print(response)
+    raw_input()
+
+
     if root[1].text != "1":
         print("Kein eindeutiger Datensatz gefunden. Breche ab.")
         sys.exit(0)
@@ -58,8 +62,7 @@ def parse_bsz_sru_infos(response):
                 if subfield.attrib['id'] == 'd':
                     sub_title = subfield.text
                 
-                # changed pica+ field
-                """if subfield.attrib['id'] == 'h':
+                if subfield.attrib['id'] == 'h':
                     author_list = subfield.text.split("; ")
                     for element in author_list:
                         print("debug: " + element)
@@ -76,8 +79,8 @@ def parse_bsz_sru_infos(response):
                                 given_name = author_temp[0]
 
                         author_dict_list.append({'family': family_name, 'given': given_name})
-                """
-        if child.attrib['id'] == '028C':
+                
+        """if child.attrib['id'] == '028C':
             for subfield in child:
                 if subfield.attrib['id'] == '8':
                     print(subfield.text)
@@ -94,6 +97,7 @@ def parse_bsz_sru_infos(response):
                             given_name = author_temp[0]
 
                     author_dict_list.append({'family': family_name, 'given': given_name})
+        """
 
         # lang
         if child.attrib['id'] == '010@':
