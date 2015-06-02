@@ -35,10 +35,6 @@ def parse_bsz_sru_infos(response):
     root = ET.fromstring(response)
 
 
-    print(response)
-    raw_input()
-
-
     if root[1].text != "1":
         print("Kein eindeutiger Datensatz gefunden. Breche ab.")
         sys.exit(0)
