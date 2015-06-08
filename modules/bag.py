@@ -17,11 +17,11 @@ def copy_source(source_dir):
         if os.path.exists("temp_" + bag_name):
             shutil.rmtree("temp_" + bag_name)
         shutil.copytree(source_dir, "temp_" + bag_name)
-
         return "temp_" + bag_name
 
     except OSError, err:
         print("FEHLER: " + str(err))
+
 
 
 def create_bag(bag_dir):
@@ -40,11 +40,15 @@ def create_bag(bag_dir):
         print(str(err))
 
 
+
 def rename_bag(src, dst):
     """
     :return:
     """
+    if os.path.exists(str(dst)):
+        shutil.rmtree(str(dst))
     os.rename(src, dst)
+
 
 
 def create_tar_gz(bag_):
@@ -54,6 +58,7 @@ def create_tar_gz(bag_):
     targz = tarfile.open(bag_ + ".tar.gz", "w:gz")
     targz.add(bag_)
     targz.close()
+
 
 
 def validate_bag(path_to_bag):
