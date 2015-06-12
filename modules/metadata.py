@@ -473,12 +473,19 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
 
     screenshot_rep_has = []
     screenshot_rep_is = ""
+    screencast_rep_has = []
+    screencast_rep_is = ""
+
     for rep_ in rep_list:
         rep_name_ = rep_.keys()[0]
         cat_ = rep_[rep_name_]['cat']
         if cat_ == 'screenshot':
             screenshot_rep_is = rep_[rep_name_]['uuid']
             screenshot_rep_has.append(rep_[rep_name_]['has_part'])
+        # BEEF
+        elif cat_ == 'screencast':
+            screencast_rep_is = rep_[rep_name_]['uuid']
+            screencast_rep_has.append(rep_[rep_name_]['has_part'])
         else:
             # techMD
             tech_md_uuid = str(uuid.uuid4())
@@ -644,6 +651,73 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
                                                                                      "relatedObjectIdentifierValue")
         object_relationship_obj_id_value.text = object_
 
+    # BEEF
+    # screencast
+    # techMD
+    tech_md_uuid = str(uuid.uuid4())
+    # Fehlerquelle
+    admid_dict_rep['screencast'] = "_" + tech_md_uuid
+    tech_md = ET.SubElement(amd_sec, "{http://www.loc.gov/METS/}techMD")
+    tech_md.set("ID", "_" + tech_md_uuid)
+    md_wrap = ET.SubElement(tech_md, "{http://www.loc.gov/METS/}mdWrap")
+    md_wrap.set("MDTYPE", "PREMIS:OBJECT")
+    xml_data = ET.SubElement(md_wrap, "{http://www.loc.gov/METS/}xmlData")
+    premis_object = ET.SubElement(xml_data,
+                                  "{info:lc/xmlns/premis-v2}object")
+    premis_object.set("{http://www.w3.org/2001/XMLSchema-instance}type", "premis:representation")
+
+    object_identifier = ET.SubElement(premis_object, "{info:lc/xmlns/premis-v2}objectIdentifier")
+    object_identifier_type = ET.SubElement(object_identifier, "{info:lc/xmlns/premis-v2}objectIdentifierType")
+    object_identifier_value = ET.SubElement(object_identifier, "{info:lc/xmlns/premis-v2}objectIdentifierValue")
+    object_identifier_type.text = "UUID"
+    object_identifier_value.text = screencast_rep_is
+
+    object_environment = ET.SubElement(premis_object, "{info:lc/xmlns/premis-v2}environment")
+    object_environment_env_char = ET.SubElement(object_environment, "{info:lc/xmlns/premis-v2}environmentCharacteristic")
+    object_environment_env_char.text = "known to work"
+    object_environment_env_purpose = ET.SubElement(object_environment, "{info:lc/xmlns/premis-v2}environmentPurpose")
+    object_environment_env_purpose.text = "render"
+    object_environment_software = ET.SubElement(object_environment, "{info:lc/xmlns/premis-v2}software")
+
+    object_environment_software_sw_name = ET.SubElement(object_environment_software,
+                                                        "{info:lc/xmlns/premis-v2}swName")
+
+    object_environment_software_sw_name.text = "VideoLAN ORGANIZATION ; vlc"
+
+    object_environment_software_sw_version = ET.SubElement(object_environment_software,
+                                                           "{info:lc/xmlns/premis-v2}swVersion")
+    object_environment_software_sw_version.text = "2.2.1"
+
+    object_environment_software_sw_type = ET.SubElement(object_environment_software,
+                                                        "{info:lc/xmlns/premis-v2}swType")
+    object_environment_software_sw_type.text = "renderer"
+
+    #if sw_dep != "":
+    #    object_environment_software_sw_dependency = ET.SubElement(object_environment_software,
+    #                                                              "{info:lc/xmlns/premis-v2}swDependency")
+
+    #    object_environment_software_sw_dependency.text = sw_dep
+
+    # hardware
+    # No hardware in screenshot representations
+
+    object_relationship = ET.SubElement(premis_object, "{info:lc/xmlns/premis-v2}relationship")
+    object_relationship_type = ET.SubElement(object_relationship, "{info:lc/xmlns/premis-v2}relationshipType")
+    object_relationship_type.text = "structural"
+    object_relationship_subtype = ET.SubElement(object_relationship,
+                                                "{info:lc/xmlns/premis-v2}relationshipSubType")
+    object_relationship_subtype.text = 'has part'
+
+    for object_ in screencast_rep_has:
+        object_relationship_obj_id = ET.SubElement(object_relationship, "{info:lc/xmlns/premis-v2}"
+                                                                        "relatedObjectIdentification")
+        object_relationship_obj_id_type = ET.SubElement(object_relationship_obj_id, "{info:lc/xmlns/premis-v2}"
+                                                                                    "relatedObjectIdentifierType")
+        object_relationship_obj_id_type.text = "UUID"
+        object_relationship_obj_id_value = ET.SubElement(object_relationship_obj_id, "{info:lc/xmlns/premis-v2}"
+                                                                                     "relatedObjectIdentifierValue")
+        object_relationship_obj_id_value.text = object_
+
     # rightsMD
     rights_md = ET.SubElement(amd_sec, "{http://www.loc.gov/METS/}rightsMD")
     rights_md.set("ID", "_" + rights_md_uuid)
@@ -735,21 +809,15 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             file_sec_file_flocat.set("OTHERLOCTYPE", "Path")
             file_sec_file_flocat.set("{http://www.w3.org/1999/xlink}href", file_[file_name_]['path'])
 
-            #if not set_screencast_:
-            #    struct_map_div_screencast = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
-            #    struct_map_div_screencast.set("TYPE", "screencast")
-            #    struct_map_div_screencast.set("ADMID", admid_dict_rep['screencast'])
-            #    set_screencast_ = True
-
-            #struct_map_fptr = ET.SubElement(struct_map_div_screencast, "{http://www.loc.gov/METS/}fptr")
-            #struct_map_fptr.set("FILEID", file_[file_name_]['uuid'])
-
-            struct_map_div_screencast = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
-            struct_map_div_screencast.set("TYPE", "screencast")
-            struct_map_div_screencast.set("ADMID", admid_dict_rep['screencast'])
+            if not set_screencast_:
+                struct_map_div_screencast = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
+                struct_map_div_screencast.set("TYPE", "screencast")
+                struct_map_div_screencast.set("ADMID", admid_dict_rep['screencast'])
+                set_screencast_ = True
 
             struct_map_fptr = ET.SubElement(struct_map_div_screencast, "{http://www.loc.gov/METS/}fptr")
             struct_map_fptr.set("FILEID", file_[file_name_]['uuid'])
+
 
         if file_name_.startswith('screenshot'):
             file_sec_file = ET.SubElement(file_sec_screenshot, "{http://www.loc.gov/METS/}file")
