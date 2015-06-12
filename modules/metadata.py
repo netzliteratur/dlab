@@ -735,11 +735,18 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             file_sec_file_flocat.set("OTHERLOCTYPE", "Path")
             file_sec_file_flocat.set("{http://www.w3.org/1999/xlink}href", file_[file_name_]['path'])
 
-            if not set_screencast_:
-                struct_map_div_screencast = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
-                struct_map_div_screencast.set("TYPE", "screencast")
-                struct_map_div_screencast.set("ADMID", admid_dict_rep['screencast'])
-                set_screencast_ = True
+            #if not set_screencast_:
+            #    struct_map_div_screencast = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
+            #    struct_map_div_screencast.set("TYPE", "screencast")
+            #    struct_map_div_screencast.set("ADMID", admid_dict_rep['screencast'])
+            #    set_screencast_ = True
+
+            #struct_map_fptr = ET.SubElement(struct_map_div_screencast, "{http://www.loc.gov/METS/}fptr")
+            #struct_map_fptr.set("FILEID", file_[file_name_]['uuid'])
+
+            struct_map_div_screencast = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
+            struct_map_div_screencast.set("TYPE", "screencast")
+            struct_map_div_screencast.set("ADMID", admid_dict_rep['screencast'])
 
             struct_map_fptr = ET.SubElement(struct_map_div_screencast, "{http://www.loc.gov/METS/}fptr")
             struct_map_fptr.set("FILEID", file_[file_name_]['uuid'])
@@ -747,6 +754,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
         if file_name_.startswith('screenshot'):
             file_sec_file = ET.SubElement(file_sec_screenshot, "{http://www.loc.gov/METS/}file")
             file_sec_file_flocat = ET.SubElement(file_sec_file, "{http://www.loc.gov/METS/}FLocat")
+
             file_sec_file.set("ID", file_[file_name_]['uuid'])
             file_sec_file.set("CREATED", file_[file_name_]['date_created'])
             file_sec_file.set("ADMID", admid_dict_file[file_[file_name_]['hash']])
@@ -755,6 +763,7 @@ def write_metadata_file(temp_dir, sru_dict, add_dict, file_list, rep_list, rep_b
             file_sec_file_flocat.set("{http://www.w3.org/1999/xlink}href", file_[file_name_]['path'])
 
             if not set_screenshot_:
+
                 struct_map_div_screenshot = ET.SubElement(struct_map_extra_div, "{http://www.loc.gov/METS/}div")
                 struct_map_div_screenshot.set("ADMID", admid_dict_rep['screenshots'])
                 struct_map_div_screenshot.set("TYPE", "screenshot")
