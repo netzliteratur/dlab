@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 import os
 import zipfile
 import tarfile
@@ -15,14 +15,15 @@ def get_zip_content(archive_):
         zip_content_ = zip_.namelist()
         for element_ in zip_content_:
             e_ = zip_.getinfo(element_)
-            cont_dict_[element_] = {e_.file_size}
+            #cont_dict_[element_] = {e_.file_size}
+            cont_dict_[element_] = e_.file_size
 
     return cont_dict_
 
 
 def get_targz_content(archive_):
     """
-    :return dict cont_dict :
+    :return: dict cont_dict
     """
     cont_dict_ = {}
     if tarfile.is_tarfile(str(archive_)):
@@ -46,7 +47,8 @@ def write_structmd(source_file, temp_dir, file_list_):
                 dir_.set("name", element_)
             else:
                 file_ = ET.SubElement(root, "{https://wwik-prod.dla-marbach.de/line/}file")
-                file_.set("name", element_)
+                u_element = unicode(element_, "utf-8", "ignore")
+                file_.set("name", u_element)
                 file_size = ET.SubElement(file_,
                                           "{https://wwik-prod.dla-marbach.de/line/}size")
                 file_size.text = str(file_list_[archive_entry_][element_])
